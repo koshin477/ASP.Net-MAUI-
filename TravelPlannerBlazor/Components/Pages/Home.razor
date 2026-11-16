@@ -1,0 +1,68 @@
+﻿@page "/"
+
+<div class="container py-4">
+    <!-- Hero Banner -->
+    <div class="p-5 mb-4 bg-gradient text-white rounded-4 shadow-lg position-relative overflow-hidden" 
+         style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+        <div class="position-relative z-index-1">
+            <h1 class="display-5 fw-bold mb-3">Explore Bangladesh with TravelEase 🇧🇩</h1>
+            <p class="lead mb-4 col-md-8">
+                Discover breathtaking destinations, rich historical heritage, curated tour packages, and plan your dream budget effortlessly.
+            </p>
+            <div class="d-flex gap-3">
+                <a href="explore" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
+                    <span class="bi bi-compass me-2"></span> Start Exploring
+                </a>
+                <a href="budget-calculator" class="btn btn-outline-light btn-lg px-4">
+                    <span class="bi bi-calculator me-2"></span> Calculate Budget
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Cards -->
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
+                <div class="card-body">
+                    <div class="fs-1 text-primary mb-3">🗺️</div>
+                    <h5 class="card-title fw-bold">Explore Divisions</h5>
+                    <p class="card-text text-muted small">Browse through historical places, nature spots, and districts across all divisions.</p>
+                    <a href="explore" class="btn btn-sm btn-outline-primary stretched-link">View Places</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
+                <div class="card-body">
+                    <div class="fs-1 text-success mb-3">🎒</div>
+                    <h5 class="card-title fw-bold">Tour Packages</h5>
+                    <p class="card-text text-muted small">Choose hassle-free, pre-planned holiday packages with hotels and transports included.</p>
+                    <a href="packages" class="btn btn-sm btn-outline-success stretched-link">Explore Packages</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
+                <div class="card-body">
+                    <div class="fs-1 text-warning mb-3">💰</div>
+                    <h5 class="card-title fw-bold">Smart Budgeting</h5>
+                    <p class="card-text text-muted small">Estimate total expenses based on persons, duration, and comfortable travel styles.</p>
+                    <a href="budget-calculator" class="btn btn-sm btn-outline-warning text-dark stretched-link">Plan Budget</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>

@@ -1,0 +1,57 @@
+﻿@page "/travel-list"
+@using TravelPlannerBlazor.Models
+
+<div class="container mt-4">
+    <h3>✈️ My Travel Planner</h3>
+
+    <!-- Add Trip Form -->
+    <div class="card p-3 mb-4 shadow-sm">
+        <div class="mb-3">
+            <label class="form-label">Trip Title</label>
+            <input type="text" class="form-control" @bind="newTrip.Title" placeholder="e.g., Cox's Bazar Tour" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-control" @bind="newTrip.Location" placeholder="e.g., Chittagong" />
+        </div>
+        <button class="btn btn-primary" @onclick="AddTrip">Add Trip</button>
+    </div>
+
+    <!-- Trip List Display -->
+    <div class="row">
+        @foreach (var trip in trips)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card p-3 shadow-sm">
+                    <h5>@trip.Title</h5>
+                    <p class="text-muted mb-1">📍 Location: @trip.Location</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private Trip newTrip = new();
+
+    private List<Trip> trips = new()
+    {
+        new Trip { Title = "Cox's Bazar Vacation", Location = "Cox's Bazar" },
+        new Trip { Title = "Sylhet Tea Garden Visit", Location = "Sylhet" }
+    };
+
+    private void AddTrip()
+    {
+        if (!string.IsNullOrWhiteSpace(newTrip.Title))
+        {
+            trips.Add(new Trip
+            {
+                Title = newTrip.Title,
+                Location = newTrip.Location
+            });
+
+            // Form clear korar jonno
+            newTrip = new Trip();
+        }
+    }
+}

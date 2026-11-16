@@ -1,0 +1,83 @@
+﻿@page "/explore"
+@inject TravelDataService DataService
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>🇧🇩 Explore Bangladesh</h3>
+        <span class="badge bg-primary fs-6">@filteredDestinations.Count Places Found</span>
+    </div>
+
+    <!-- Division Filter Buttons -->
+    <div class="mb-4 d-flex flex-wrap gap-2">
+        @foreach (var div in divisions)
+        {
+            <button class="btn @(selectedDivision == div ? "btn-primary" : "btn-outline-primary") btn-sm rounded-pill px-3"
+                    @onclick="() => FilterByDivision(div)">
+                @div
+            </button>
+        }
+    </div>
+
+    <!-- Destination Cards -->
+    <div class="row">
+        @foreach (var place in filteredDestinations)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="@place.ImageUrl" class="card-img-top" alt="@place.Name" style="height: 200px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">@place.Name</h5>
+                            <span class="badge bg-info text-dark">@place.Category</span>
+                        </div>
+                        <p class="text-muted small mb-2">📍 @place.District, @place.Division Division</p>
+                        <p class="card-text small">@place.Description</p>
+
+                        <div class="mt-auto">
+                            <hr />
+                            <p class="mb-1 small"><strong>⏳ Ideal Tour:</strong> @place.IdealDuration</p>
+                            <p class="mb-2 small"><strong>💰 Est. Cost:</strong> ৳@place.EstimatedCostPerPerson / person</p>
+
+                            <!-- Activities Badges -->
+                            <div class="mb-3">
+                                @foreach (var act in place.Activities)
+                                {
+                                    <span class="badge bg-light text-secondary border me-1 mb-1">@act</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<string> divisions = new();
+    private List<Destination> allDestinations = new();
+    private List<Destination> filteredDestinations = new();
+    private string selectedDivision = "All";
+
+    protected override void OnInitialized()
+    {
+        divisions = DataService.GetDivisions();
+        allDestinations = DataService.GetDestinations();
+        filteredDestinations = allDestinations;
+    }
+
+    private void FilterByDivision(string division)
+    {
+        selectedDivision = division;
+        if (division == "All")
+        {
+            filteredDestinations = allDestinations;
+        }
+        else
+        {
+            filteredDestinations = allDestinations
+                .Where(d => d.Division.Equals(division, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+    }
+}
