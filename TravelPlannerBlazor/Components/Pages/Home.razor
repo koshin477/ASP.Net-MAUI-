@@ -1,68 +1,107 @@
 ﻿@page "/"
+@inject TravelDataService DataService
+@inject NavigationManager NavManager
 
 <div class="container py-4">
-    <!-- Hero Banner -->
-    <div class="p-5 mb-4 bg-gradient text-white rounded-4 shadow-lg position-relative overflow-hidden" 
-         style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-        <div class="position-relative z-index-1">
-            <h1 class="display-5 fw-bold mb-3">Explore Bangladesh with TravelEase 🇧🇩</h1>
-            <p class="lead mb-4 col-md-8">
-                Discover breathtaking destinations, rich historical heritage, curated tour packages, and plan your dream budget effortlessly.
+    <!-- Hero Banner with Welcoming Background Image & Dark Overlay -->
+    <div class="hero-banner p-5 mb-4 text-white rounded-4 shadow-lg position-relative overflow-hidden">
+        <div class="position-relative" style="z-index: 2;">
+            <span class="badge bg-warning text-dark mb-2 px-3 py-2 fw-semibold">✨ Discover The Beauty of Bengal</span>
+            <h1 class="display-5 fw-bold mb-3">Welcome to Travel BD </h1>
+            <p class="lead mb-4 col-md-8 text-light">
+                Explore historical monuments, lush green tea gardens, serene beaches, and plan your perfect budget trip across Bangladesh.
             </p>
-            <div class="d-flex gap-3">
-                <a href="explore" class="btn btn-warning btn-lg px-4 fw-bold shadow-sm">
-                    <span class="bi bi-compass me-2"></span> Start Exploring
+
+            <!-- Quick Search Bar inside Banner -->
+            <div class="row g-2 mb-4 col-md-8">
+                <div class="col-sm-8">
+                    <input type="text" class="form-control form-control-lg border-0 shadow-sm"
+                           placeholder="Where do you want to go? (e.g., Sylhet, Cox's Bazar)"
+                           @bind="searchQuery" />
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-warning btn-lg w-100 fw-bold shadow-sm" @onclick="GoToExplore">
+                        <span class="bi bi-search me-1"></span> Find Places
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-3">
+                <a href="explore" class="btn btn-light btn-sm px-3 py-2 fw-semibold text-primary">
+                    <span class="bi bi-compass-fill me-1"></span> All Divisions
                 </a>
-                <a href="budget-calculator" class="btn btn-outline-light btn-lg px-4">
-                    <span class="bi bi-calculator me-2"></span> Calculate Budget
+                <a href="packages" class="btn btn-outline-light btn-sm px-3 py-2 fw-semibold">
+                    <span class="bi bi-bag-heart-fill me-1"></span> Tour Packages
+                </a>
+                <a href="budget-calculator" class="btn btn-outline-light btn-sm px-3 py-2 fw-semibold">
+                    <span class="bi bi-calculator-fill me-1"></span> Budget Calculator
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Quick Navigation Cards -->
-    <div class="row g-4 mt-2">
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
-                <div class="card-body">
-                    <div class="fs-1 text-primary mb-3">🗺️</div>
-                    <h5 class="card-title fw-bold">Explore Divisions</h5>
-                    <p class="card-text text-muted small">Browse through historical places, nature spots, and districts across all divisions.</p>
-                    <a href="explore" class="btn btn-sm btn-outline-primary stretched-link">View Places</a>
-                </div>
+    <!-- App Highlights / Quick Stats -->
+    <div class="row g-3 mb-4 text-center">
+        <div class="col-4">
+            <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-primary">
+                <h4 class="fw-bold text-primary mb-0">8 Divisions</h4>
+                <small class="text-muted">Complete Coverage</small>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
-                <div class="card-body">
-                    <div class="fs-1 text-success mb-3">🎒</div>
-                    <h5 class="card-title fw-bold">Tour Packages</h5>
-                    <p class="card-text text-muted small">Choose hassle-free, pre-planned holiday packages with hotels and transports included.</p>
-                    <a href="packages" class="btn btn-sm btn-outline-success stretched-link">Explore Packages</a>
-                </div>
+        <div class="col-4">
+            <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-success">
+                <h4 class="fw-bold text-success mb-0">@totalPlaces+ Places</h4>
+                <small class="text-muted">Historical & Nature</small>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 text-center p-3 hover-card">
-                <div class="card-body">
-                    <div class="fs-1 text-warning mb-3">💰</div>
-                    <h5 class="card-title fw-bold">Smart Budgeting</h5>
-                    <p class="card-text text-muted small">Estimate total expenses based on persons, duration, and comfortable travel styles.</p>
-                    <a href="budget-calculator" class="btn btn-sm btn-outline-warning text-dark stretched-link">Plan Budget</a>
-                </div>
+        <div class="col-4">
+            <div class="p-3 bg-white rounded-3 shadow-sm border-start border-4 border-warning">
+                <h4 class="fw-bold text-warning mb-0">@totalPackages Packages</h4>
+                <small class="text-muted">Ready-to-Book Deals</small>
             </div>
         </div>
     </div>
+
+    <!-- Core Functionalities Cards -->
+    
+
 </div>
 
 <style>
+    /* Welcoming Background Image with Dark Gradient Overlay so text is 100% readable */
+    .hero-banner {
+        background: linear-gradient(rgba(15, 23, 42, 0.72), rgba(30, 58, 138, 0.78)), url('images/banner.jpg'), url('https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?w=1200&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+    }
+
     .hover-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .hover-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    }
+
+        .hover-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12) !important;
+        }
 </style>
+
+@code {
+    private string searchQuery = string.Empty;
+    private int totalPlaces = 0;
+    private int totalPackages = 0;
+
+    protected override void OnInitialized()
+    {
+        totalPlaces = DataService.GetDestinations().Count;
+        totalPackages = DataService.GetPackages().Count;
+    }
+
+    private void GoToExplore()
+    {
+        NavManager.NavigateTo("explore");
+    }
+}
