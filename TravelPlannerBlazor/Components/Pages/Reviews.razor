@@ -1,0 +1,119 @@
+﻿@page "/reviews"
+@using TravelPlannerBlazor.Components.Shared
+@inject ReviewService ReviewSvc
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h3>💬 Traveler Stories & Emergency Hub</h3>
+        <p class="text-muted">Share your travel experiences across Bangladesh and keep emergency contacts handy.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Left Column: Write Review & Feed -->
+        <div class="col-lg-8">
+            <!-- Review Submission Form -->
+            <div class="card p-4 shadow-sm border-0 mb-4 bg-light">
+                <h5 class="fw-bold mb-3">✍️ Share Your Experience</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Your Name</label>
+                        <input type="text" class="form-control" placeholder="e.g., Rahim Uddin" @bind="newReview.TravelerName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold">Visited Destination</label>
+                        <input type="text" class="form-control" placeholder="e.g., Cox's Bazar, Birishiri" @bind="newReview.DestinationName" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold">Rating (1-5)</label>
+                        <select class="form-select" @bind="newReview.Rating">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 - Amazing)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
+                            <option value="3">⭐⭐⭐ (3 - Average)</option>
+                            <option value="2">⭐⭐ (2 - Below Average)</option>
+                            <option value="1">⭐ (1 - Poor)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label small fw-bold">Your Story / Tips</label>
+                        <input type="text" class="form-control" placeholder="Write helpful tips for other travelers..." @bind="newReview.Comment" />
+                    </div>
+                    <div class="col-12 text-end">
+                        <button class="btn btn-primary px-4" @onclick="SubmitReview">
+                            <span class="bi bi-send-fill me-1"></span> Post Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Feed -->
+            <h5 class="fw-bold mb-3">🌍 Recent Traveler Reviews (@reviews.Count)</h5>
+            @foreach (var rev in reviews)
+            {
+                <div class="card p-3 shadow-sm border-0 mb-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="fw-bold mb-0 text-primary">@rev.TravelerName</h6>
+                            <small class="text-muted">Visited: <strong>@rev.DestinationName</strong> • @rev.DatePosted.ToString("dd MMM, yyyy")</small>
+                        </div>
+                        <StarRating Rating="@rev.Rating" />
+                    </div>
+                    <p class="mt-2 mb-0 text-dark small">@rev.Comment</p>
+                </div>
+            }
+        </div>
+
+        <!-- Right Column: Bangladesh Emergency Travel Helpline -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-danger text-white p-4 mb-4">
+                <h5 class="fw-bold mb-3"><span class="bi bi-shield-fill-exclamation me-2"></span>Emergency Helplines</h5>
+                <p class="small opacity-75">Save or call these toll-free numbers anywhere in Bangladesh during emergencies:</p>
+                <hr class="border-light" />
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3 d-flex justify-content-between align-items-center">
+                        <span>🚨 National Emergency</span>
+                        <span class="badge bg-white text-danger fs-6">999</span>
+                    </li>
+                    <li class="mb-3 d-flex justify-content-between align-items-center">
+                        <span>👮 Tourist Police BD</span>
+                        <span class="badge bg-white text-danger fs-6">01320-222222</span>
+                    </li>
+                    <li class="mb-3 d-flex justify-content-between align-items-center">
+                        <span>🏥 Health Call Center</span>
+                        <span class="badge bg-white text-danger fs-6">16263</span>
+                    </li>
+                    <li class="d-flex justify-content-between align-items-center">
+                        <span>🚒 Fire Service</span>
+                        <span class="badge bg-white text-danger fs-6">16163</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4 bg-white">
+                <h6 class="fw-bold text-dark mb-2">💡 Quick Travel Tip</h6>
+                <p class="text-muted small mb-0">
+                    Always carry a physical photocopy of your NID or Passport when checking into hotels in Cox's Bazar, Sylhet, or Chattogram Hill Tracts.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<TravelerReview> reviews = new();
+    private TravelerReview newReview = new();
+
+    protected override void OnInitialized()
+    {
+        reviews = ReviewSvc.GetAllReviews();
+    }
+
+    private void SubmitReview()
+    {
+        if (!string.IsNullOrWhiteSpace(newReview.TravelerName) && !string.IsNullOrWhiteSpace(newReview.Comment))
+        {
+            ReviewSvc.AddReview(newReview);
+            newReview = new TravelerReview(); 
+            reviews = ReviewSvc.GetAllReviews();
+        }
+    }
+}

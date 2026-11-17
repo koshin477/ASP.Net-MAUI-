@@ -1,5 +1,6 @@
 ﻿@page "/explore"
 @inject TravelDataService DataService
+@inject NavigationManager NavManager
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -45,6 +46,20 @@
                                     <span class="badge bg-light text-secondary border me-1 mb-1">@act</span>
                                 }
                             </div>
+
+                            <div class="mt-auto pt-2">
+                                <button class="btn btn-sm btn-primary w-100" @onclick="() => SaveToItinerary(place.Name, place.District)">
+                                    <span class="bi bi-bookmark-plus me-1"></span> Add to My Itinerary
+                                </button>
+                            </div>
+                            <div class="d-flex gap-2 mt-auto pt-2">
+                                <button class="btn btn-sm btn-outline-secondary w-50" @onclick="() => OpenGuideModal(place)">
+                                    <span class="bi bi-info-circle me-1"></span> Guide
+                                </button>
+                                <button class="btn btn-sm btn-primary w-50" @onclick="() => SaveToItinerary(place.Name, place.District)">
+                                    <span class="bi bi-bookmark-plus me-1"></span> Save Trip
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,6 +67,38 @@
         }
     </div>
 </div>
+<!-- Destination Travel Guide Modal -->
+@if (selectedPlace != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">🧭 @selectedPlace.Name - Travel Guide</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CloseGuideModal"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="@selectedPlace.ImageUrl" class="img-fluid rounded mb-3 w-100" style="height: 180px; object-fit: cover;" />
+                    <p class="text-muted small">@selectedPlace.Description</p>
+                    <hr />
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><strong>📍 Location:</strong> @selectedPlace.District, @selectedPlace.Division Division</li>
+                        <li class="mb-2"><strong>⏳ Recommended Stay:</strong> @selectedPlace.IdealDuration</li>
+                        <li class="mb-2"><strong>💵 Est. Budget:</strong> ৳@selectedPlace.EstimatedCostPerPerson / person</li>
+                        <li class="mb-2"><strong>🚌 How to Reach:</strong> Direct AC/Non-AC bus or train services are available from Dhaka to @selectedPlace.District.</li>
+                        <li class="mb-0"><strong>🌤️ Best Time:</strong> October to March (Pleasant weather for sightseeing).</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" @onclick="CloseGuideModal">Close</button>
+                    <button class="btn btn-primary btn-sm" @onclick="() => { SaveToItinerary(selectedPlace.Name, selectedPlace.District); CloseGuideModal(); }">
+                        Add to My Itinerary
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     private List<string> divisions = new();
@@ -79,5 +126,21 @@
                 .Where(d => d.Division.Equals(division, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
+    }
+    private void SaveToItinerary(string placeName, string district)
+    {
+        DataService.AddTrip(placeName, district);
+        NavManager.NavigateTo("travel-list");
+    }
+    private Destination? selectedPlace = null;
+
+    private void OpenGuideModal(Destination place)
+    {
+        selectedPlace = place;
+    }
+
+    private void CloseGuideModal()
+    {
+        selectedPlace = null;
     }
 }

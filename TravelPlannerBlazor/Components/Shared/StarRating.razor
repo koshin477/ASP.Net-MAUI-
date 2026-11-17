@@ -1,0 +1,17 @@
+﻿<span class="text-warning">
+    @for (int i = 1; i <= 5; i++)
+    {
+        if (i <= Rating)
+        {
+            <span class="bi bi-star-fill me-1"></span>
+        }
+        else
+        {
+            <span class="bi bi-star me-1 text-muted"></span>
+        }
+    }
+</span>
+
+@code {
+    [Parameter] public int Rating { get; set; } = 5;
+}

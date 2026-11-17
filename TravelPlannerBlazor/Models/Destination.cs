@@ -12,4 +12,7 @@ public class Destination
     public string IdealDuration { get; set; } = string.Empty; 
     public decimal EstimatedCostPerPerson { get; set; }
     public List<string> Activities { get; set; } = new();
+    public string HowToGo { get; set; } = string.Empty;
+    public string BestTimeToVisit { get; set; } = string.Empty;
+    public string FamousFood { get; set; } = string.Empty;
 }

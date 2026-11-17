@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using TravelPlannerBlazor.Services;
 
 namespace TravelPlannerBlazor
 {
@@ -16,6 +17,8 @@ namespace TravelPlannerBlazor
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<TravelPlannerBlazor.Services.TravelDataService>();
+            builder.Services.AddSingleton<TripStateService>();
+            builder.Services.AddSingleton<ReviewService>();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

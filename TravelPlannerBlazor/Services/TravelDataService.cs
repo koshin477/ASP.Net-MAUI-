@@ -322,7 +322,7 @@ public class TravelDataService
                 IdealDuration = "1 Day",
                 EstimatedCostPerPerson = 1800,
                 Activities = new() { "Hill Trekking", "Khoiyachora Waterfall Trail", "Guliakhali Sea Beach Visit" }
-            },            
+            },
         new Destination
         {
             Id = 25,
@@ -499,7 +499,7 @@ public class TravelDataService
             Division = "Rangpur",
             District = "Dinajpur",
             Category = "Historical",
-            ImageUrl = "Images/kantajew.png", 
+            ImageUrl = "Images/kantajew.png",
             Description = "An iconic 18th-century late-medieval Hindu temple famous for its intricate terracotta plaques depicting epic stories.",
             IdealDuration = "Half Day (3-4 Hours)",
             EstimatedCostPerPerson = 1200,
@@ -569,7 +569,59 @@ public class TravelDataService
                 IdealDuration = "Half Day (3-4 Hours)",
                 EstimatedCostPerPerson = 800,
                 Activities = new() { "Historical Sightseeing", "Photography" }
-            }
+            },
+            new Destination
+            {
+            Id = 44,
+            Name = "Shashi Lodge",
+            Division = "Mymensingh",
+            District = "Mymensingh",
+            Category = "Historical",
+            ImageUrl = "Images/shashi_lodge.png",
+            Description = "A 19th-century palatial mansion built by Maharaja Suryakanta Acharya, famous for its Greek-style Venus statue and lush garden.",
+            IdealDuration = "Half Day (3-4 Hours)",
+            EstimatedCostPerPerson = 600,
+            Activities = new() { "Palace Architecture Tour", "Museum Visit", "Photography" }
+        },
+        new Destination
+        {
+            Id = 45,
+            Name = "Muktagacha Rajbari",
+            Division = "Mymensingh",
+            District = "Mymensingh",
+            Category = "Historical",
+            ImageUrl = "Images/muktagacha.png",
+            Description = "Ancient zamindar palace known for its intricate terracotta work, grand gateways, and the legendary sweet 'Monda'.",
+            IdealDuration = "Half Day",
+            EstimatedCostPerPerson = 700,
+            Activities = new() { "Historical Sightseeing", "Tasting Famous Monda", "Heritage Walk" }
+        },
+        new Destination
+        {
+            Id = 46,
+            Name = "Alexander Castle (Lohar Kuthi)",
+            Division = "Mymensingh",
+            District = "Mymensingh",
+            Category = "Historical",
+            ImageUrl = "Images/alexander_castle.png",
+            Description = "Built in 1879 with iron and wood, this historic bungalow hosted Rabindranath Tagore and Mahatma Gandhi.",
+            IdealDuration = "2-3 Hours",
+            EstimatedCostPerPerson = 400,
+            Activities = new() { "Heritage Exploration", "Brahmaputra Riverside Walk", "Photography" }
+        },
+        new Destination
+        {
+            Id = 47,
+            Name = "Birishiri & China Clay Hills",
+            Division = "Mymensingh",
+            District = "Netrokona",
+            Category = "Nature & Heritage",
+            ImageUrl = "Images/birishiri.png",
+            Description = "Famous for its turquoise-blue water lakes, white clay hills, Someshwari River, and indigenous Garo cultural heritage.",
+            IdealDuration = "2 Days, 1 Night",
+            EstimatedCostPerPerson = 3500,
+            Activities = new() { "Someshwari River Boat Ride", "Hill Trekking", "Garo Museum Visit" }
+        }
     };
 
     public List<TourPackage> GetPackages() => new()
@@ -596,4 +648,17 @@ public class TravelDataService
         }
 
     };
+    private List<Trip> savedTrips = new();
+    public List<Trip> GetSavedTrips() => savedTrips;
+    public void AddTrip(string title, string location)
+    {
+        if (!string.IsNullOrWhiteSpace(title))
+        {
+            savedTrips.Add(new Trip
+            {
+                Title = title,
+                Location = location
+            });
+        }
+    }
 }
